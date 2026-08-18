@@ -3,7 +3,11 @@
   "dockerComposeFile": "../docker-compose.yml",
   "service": "db_main",
   "workspaceFolder": "/workspace",
-  "forwardPorts":,
+  "forwardPorts": [
+    5432,
+    5433,
+    6379
+  ],
   "portsAttributes": {
     "5432": {
       "label": "Master-Bot Core DB Engine",

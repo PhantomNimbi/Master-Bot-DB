@@ -1,20 +1,38 @@
 version: '3.8'
 
 services:
-  postgres:
-    image: postgres:16-alpine
-    container_name: master_bot_db
+  db_main:
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+    container_name: master_bot_db_main
     restart: always
     environment:
-      # Reads user, password, and main DB name from GitHub environment variables
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME:-master_bot} # Defaults to master_bot if DB_NAME isn't set
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_DB: ${DB_NAME:-master_bot}
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./init-multiple-databases.sh:/docker-entrypoint-initdb.d/init-multiple-databases.sh
+      - postgres_main_data:/var/lib/postgresql/data
+      - .:/workspace
+
+  db_shadow:
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+    container_name: master_bot_db_shadow
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      # Appends _shadow to the provided database name secret
+      POSTGRES_DB: ${DB_NAME:-master_bot}_shadow
+    ports:
+      - "5433:5432" # Maps internal default 5432 port outward to 5433
+    volumes:
+      - postgres_shadow_data:/var/lib/postgresql/data
 
 volumes:
-  postgres_data:
+  postgres_main_data:
+  postgres_shadow_data:

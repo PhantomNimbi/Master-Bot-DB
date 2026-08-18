@@ -1,26 +1,29 @@
 {
-  "name": "PostgreSQL Server Infrastructure",
-  "build": {
-    "dockerfile": "Dockerfile"
-  },
-  "features": {
-    "ghcr.io/devcontainers/features/postgres:1": {
-      "version": "16"
-    }
-  },
-  "forwardPorts":,
+  "name": "Master-Bot Prisma DB Infrastructure",
+  // Tells Codespaces to look for the compose file in the repository root
+  "dockerComposeFile": "../docker-compose.yml",
+  // Targets the main database container as the primary shell context
+  "service": "db_main",
+  "workspaceFolder": "/workspace",
+  "forwardPorts": [
+    5432,
+    5433
+  ],
   "portsAttributes": {
     "5432": {
-      "label": "PostgreSQL Multi-Database Engine",
+      "label": "Master-Bot Core DB Engine",
+      "onAutoForward": "notify",
+      "visibility": "public"
+    },
+    "5433": {
+      "label": "Master-Bot Shadow DB Engine",
       "onAutoForward": "notify",
       "visibility": "public"
     }
   },
   "containerEnv": {
-    "PGUSER": "${localEnv:DB_USER}",
-    "PGPASSWORD": "${localEnv:DB_PASSWORD}",
-    "PGDATABASE": "${localEnv:DB_NAME}",
-    "PGDATABASE_SHADOW": "${localEnv:DB_NAME}_shadow"
-  },
-  "postCreateCommand": "bash .devcontainer/setup-databases.sh"
+    "DB_USER_SECRET": "${localEnv:DB_USER}",
+    "DB_PASSWORD_SECRET": "${localEnv:DB_PASSWORD}",
+    "DB_NAME_SECRET": "${localEnv:DB_NAME}"
+  }
 }

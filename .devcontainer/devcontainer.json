@@ -4,25 +4,22 @@
   "service": "db_main",
   "workspaceFolder": "/workspace",
   "forwardPorts": [
-    5432,
-    5433,
+    6433,
+    6432,
     6379
   ],
   "portsAttributes": {
     "5432": {
       "label": "Master-Bot Core DB Engine",
-      "onAutoForward": "notify",
-      "visibility": "public"
+      "onAutoForward": "notify"
     },
     "5433": {
       "label": "Master-Bot Shadow DB Engine",
-      "onAutoForward": "notify",
-      "visibility": "public"
+      "onAutoForward": "notify"
     },
     "6379": {
       "label": "Master-Bot Shared Redis Cache",
-      "onAutoForward": "notify",
-      "visibility": "public"
+      "onAutoForward": "notify"
     }
   },
   "containerEnv": {
@@ -36,5 +33,7 @@
         "github.vscode-pull-request-github"
       ]
     }
-  }
+  },
+  // Automatically runs the GitHub CLI utility right after startup to force visibility rules to update
+  "postStartCommand": "gh codespace ports visibility 5432:public 5433:public 6379:public"
 }

@@ -6,14 +6,14 @@ services:
     container_name: master_bot_db
     restart: always
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: youshallnotpass
-      POSTGRES_DB: master_bot
+      # Reads user, password, and main DB name from GitHub environment variables
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME:-master_bot} # Defaults to master_bot if DB_NAME isn't set
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      # Automatically initializes the second (shadow) database
       - ./init-multiple-databases.sh:/docker-entrypoint-initdb.d/init-multiple-databases.sh
 
 volumes:

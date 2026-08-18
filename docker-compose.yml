@@ -16,8 +16,6 @@ services:
       - postgres_main_data:/var/lib/postgresql/data
       - /var/run/docker.sock:/var/run/docker.sock
       - .:/workspace
-    # Points explicitly to the true absolute binary location inside Ubuntu's file footprint
-    command: ["/usr/lib/postgresql/18/bin/postgres", "-D", "/var/lib/postgresql/data", "-c", "listen_addresses=*", "-c", "wal_level=logical"]
 
   db_shadow:
     build:
@@ -35,7 +33,6 @@ services:
     volumes:
       - postgres_shadow_data:/var/lib/postgresql/data
       - /var/run/docker.sock:/var/run/docker.sock
-    command: ["/usr/lib/postgresql/18/bin/postgres", "-D", "/var/lib/postgresql/data", "-c", "listen_addresses=*"]
 
   redis:
     image: redis:alpine

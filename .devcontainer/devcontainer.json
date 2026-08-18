@@ -11,7 +11,7 @@
   "forwardPorts":,
   "portsAttributes": {
     "5432": {
-      "label": "PostgreSQL Port",
+      "label": "PostgreSQL Multi-Database Engine",
       "onAutoForward": "notify",
       "visibility": "public"
     }
@@ -19,7 +19,8 @@
   "containerEnv": {
     "PGUSER": "${localEnv:DB_USER}",
     "PGPASSWORD": "${localEnv:DB_PASSWORD}",
-    "PGDATABASE": "${localEnv:DB_NAME}"
+    "PGDATABASE": "${localEnv:DB_NAME}",
+    "PGDATABASE_SHADOW": "${localEnv:DB_NAME}_shadow"
   },
   "postCreateCommand": "bash .devcontainer/setup-databases.sh"
 }

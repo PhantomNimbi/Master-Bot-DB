@@ -26,7 +26,6 @@
     "DB_PASSWORD": "${localEnv:DB_PASSWORD}",
     "DB_NAME": "${localEnv:DB_NAME}"
   },
-  // Mounts write-access permissions for your GitHub authentication tokens
   "customizations": {
     "vscode": {
       "extensions": [

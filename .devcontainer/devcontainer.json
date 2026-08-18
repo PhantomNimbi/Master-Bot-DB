@@ -1,0 +1,29 @@
+{
+  "name": "PostgreSQL Server Infrastructure",
+  // Uses standard, lightweight Ubuntu image for optimal Codespaces compatibility
+  "image": "ubuntu:latest",
+  
+  "features": {
+    // Official PostgreSQL devcontainer feature
+    "ghcr.io/devcontainers/features/postgres:1": {
+      "version": "16",
+      // Dynamically injects the user & password secrets from the environment
+      "username": "${localEnv:DB_USER}",
+      "password": "${localEnv:DB_PASSWORD}",
+      "database": "${localEnv:DB_NAME}"
+    }
+  },
+
+  // Forward the Postgres port and ensure it is exposed publicly
+  "forwardPorts": [5432],
+  "portsAttributes": {
+    "5432": {
+      "label": "PostgreSQL Port",
+      "onAutoForward": "notify",
+      "visibility": "public"
+    }
+  },
+
+  // Automatically sets up the shadow database after the container builds
+  "postCreateCommand": "bash .devcontainer/setup-shadow-db.sh"
+}

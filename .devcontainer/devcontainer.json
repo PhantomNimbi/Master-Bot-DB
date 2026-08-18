@@ -1,14 +1,9 @@
 {
   "name": "Master-Bot Prisma DB Infrastructure",
-  // Tells Codespaces to look for the compose file in the repository root
   "dockerComposeFile": "../docker-compose.yml",
-  // Targets the main database container as the primary shell context
   "service": "db_main",
   "workspaceFolder": "/workspace",
-  "forwardPorts": [
-    5432,
-    5433
-  ],
+  "forwardPorts":,
   "portsAttributes": {
     "5432": {
       "label": "Master-Bot Core DB Engine",
@@ -19,11 +14,24 @@
       "label": "Master-Bot Shadow DB Engine",
       "onAutoForward": "notify",
       "visibility": "public"
+    },
+    "6379": {
+      "label": "Master-Bot Shared Redis Cache",
+      "onAutoForward": "notify",
+      "visibility": "public"
     }
   },
   "containerEnv": {
-    "DB_USER_SECRET": "${localEnv:DB_USER}",
-    "DB_PASSWORD_SECRET": "${localEnv:DB_PASSWORD}",
-    "DB_NAME_SECRET": "${localEnv:DB_NAME}"
+    "DB_USER": "${localEnv:DB_USER}",
+    "DB_PASSWORD": "${localEnv:DB_PASSWORD}",
+    "DB_NAME": "${localEnv:DB_NAME}"
+  },
+  // Mounts write-access permissions for your GitHub authentication tokens
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "github.vscode-pull-request-github"
+      ]
+    }
   }
 }
